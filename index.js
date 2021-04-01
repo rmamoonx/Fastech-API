@@ -1,8 +1,11 @@
-const express = require("express");
-const bodyParser = require("body-parser");
+var express = require("express");
+var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
-var port = process.env.PORT || 3000;
+var bcrypt = require("bcrypt");
 var User = require("./models/User");
+
+var port = process.env.PORT || 3000;
+var saltRouds = 10;
 
 const app = express();
 
