@@ -1,39 +1,88 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const MongoClient = require("mongodb").MongoClient;
+var mongoose = require("mongoose");
+var port = process.env.PORT || 3000;
+var User = require("./models/User");
+
 const app = express();
-const port = 3000;
-const User = require("./models/User");
 
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 app.use(bodyParser.json());
+app.use(bodyParser.raw());
 
-const uri =
-  "mongodb+srv://fastech:<password>@fastech.okn4v.mongodb.net/Fastech?retryWrites=true&w=majority";
-const client = new MongoClient(uri, {
+const myurl =
+  "mongodb+srv://fastech:Fastech2020@fastech.okn4v.mongodb.net/Fastech?retryWrites=true&w=majority";
+const secret = "mysecretkey"; //going to be used later on for key token
+
+const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
-client.connect((err) => {
-  console.log("Database is connected");
-  client.close();
-});
+};
+
+mongoose
+  .connect(myurl, options)
+  .then(() => {
+    console.log("Database is connected");
+  })
+  .catch((err) => {
+    console.log("Error is ", err.message);
+  });
 
 app.get("/", (req, res) => {
   res.status(200).send("Hello World!");
 });
 
 app.post("/signup", async (req, res) => {
+  console.log(req.body);
+
   var newUser = new User({
     firstName: req.body.fname,
-    lasttName: req.body.lname,
+    lastName: req.body.lname,
     email: req.body.email,
     password: req.body.password,
     role: req.body.role,
   });
-  await newUser
-    .save()
-    .then(() => {
-      res.status(200).send(newUser);
+
+  await User.findOne({ email: newUser.email })
+    .then(async (profile) => {
+      if (!profile) {
+        await newUser
+          .save()
+          .then(() => {
+            res.status(200).send(newUser);
+          })
+          .catch((err) => {
+            console.log("Error is ", err.message);
+          });
+      } else {
+        res.send("Email already exists...");
+      }
+    })
+    .catch((err) => {
+      console.log("Error is", err.message);
+    });
+});
+
+app.post("/login", async (req, res) => {
+  var newUser = {};
+  newUser.email = req.body.email;
+  newUser.password = req.body.password;
+
+  await User.findOne({ email: newUser.email })
+    .then((profile) => {
+      if (!profile) {
+        res.send("Email not exist");
+      } else {
+        if (profile.password == newUser.password) {
+          res.send("User authenticated");
+        } else {
+          res.send("User Unauthorized Access");
+        }
+      }
     })
     .catch((err) => {
       console.log("Error is ", err.message);

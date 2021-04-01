@@ -17,8 +17,8 @@ const UserSchema = mongoose.Schema({
     require: true,
   },
   role: {
-    type: Boolean,
+    type: String,
     require: true,
   },
 });
-module.exports = User = mongoose.model("UserSchema", UserSchema);
+module.exports = User = mongoose.model("User", UserSchema);
