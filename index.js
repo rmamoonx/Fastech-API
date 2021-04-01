@@ -1,3 +1,4 @@
+require("dotenv").config();
 var express = require("express");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
@@ -17,9 +18,8 @@ app.use(
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
-const myurl =
-  "mongodb+srv://fastech:Fastech2020@fastech.okn4v.mongodb.net/Fastech?retryWrites=true&w=majority";
-const secret = "mysecretkey"; //going to be used later on for key token
+const myurl = process.env.DB;
+const secret = "mysecretkey";
 
 const options = {
   useNewUrlParser: true,
