@@ -5,7 +5,7 @@ var bcrypt = require("bcrypt");
 var User = require("./models/User");
 
 var port = process.env.PORT || 3000;
-var saltRouds = 10;
+var saltRounds = 10;
 
 const app = express();
 
@@ -40,8 +40,6 @@ app.get("/", (req, res) => {
 });
 
 app.post("/signup", async (req, res) => {
-  console.log(req.body);
-
   var newUser = new User({
     firstName: req.body.fname,
     lastName: req.body.lname,
@@ -49,20 +47,26 @@ app.post("/signup", async (req, res) => {
     password: req.body.password,
     role: req.body.role,
   });
-
   await User.findOne({ email: newUser.email })
     .then(async (profile) => {
       if (!profile) {
-        await newUser
-          .save()
-          .then(() => {
-            res.status(200).send(newUser);
-          })
-          .catch((err) => {
-            console.log("Error is ", err.message);
-          });
+        bcrypt.hash(newUser.password, saltRounds, async (err, hash) => {
+          if (err) {
+            console.log("Error is", err.message);
+          } else {
+            newUser.password = hash;
+            await newUser
+              .save()
+              .then(() => {
+                res.status(200).send(newUser);
+              })
+              .catch((err) => {
+                console.log("Error is ", err.message);
+              });
+          }
+        });
       } else {
-        res.send("Email already exists...");
+        res.send("User already exists...");
       }
     })
     .catch((err) => {
@@ -78,13 +82,21 @@ app.post("/login", async (req, res) => {
   await User.findOne({ email: newUser.email })
     .then((profile) => {
       if (!profile) {
-        res.send("Email not exist");
+        res.send("User not exist");
       } else {
-        if (profile.password == newUser.password) {
-          res.send("User authenticated");
-        } else {
-          res.send("User Unauthorized Access");
-        }
+        bcrypt.compare(
+          newUser.password,
+          profile.password,
+          async (err, result) => {
+            if (err) {
+              console.log("Error is", err.message);
+            } else if (result == true) {
+              res.send("User authenticated");
+            } else {
+              res.send("User Unauthorized Access");
+            }
+          }
+        );
       }
     })
     .catch((err) => {
