@@ -4,8 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const signupRoutes = require("./api/routes/signup");
-const loginRoutes = require("./api/routes/login");
-const userRoutes = require("./api/routes/userdetail");
+const userRoutes = require("./api/routes/user");
 
 const port = process.env.PORT || 3000;
 
@@ -26,6 +25,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
+mongoose.set("useFindAndModify", false);
 mongoose
   .connect(myurl, options)
   .then(() => {
@@ -40,7 +40,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/signup", signupRoutes);
-app.use("/login", loginRoutes);
 app.use("/user", userRoutes);
 
 app.listen(port, () => {
