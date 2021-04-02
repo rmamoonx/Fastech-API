@@ -41,7 +41,7 @@ router.post("/login", async (req, res) => {
                 .status(200)
                 .json({ message: "User authenticated", token: token });
             } else {
-              res.send("User Unauthorized Access");
+              res.status(401).json({ message: "User Unauthorized Access" });
             }
           }
         );
@@ -51,7 +51,6 @@ router.post("/login", async (req, res) => {
       console.log("Error is ", err.message);
     });
 });
-module.exports = router;
 
 router.patch("/details", checkAuth, async (req, res) => {
   var newUser = {};

@@ -8,8 +8,8 @@ var saltRounds = 10;
 
 router.post("/", async (req, res) => {
   var newUser = new User({
-    firstName: req.body.fname,
-    lastName: req.body.lname,
+    firstName: req.body.firstname,
+    lastName: req.body.lastname,
     email: req.body.email,
     password: req.body.password,
     role: req.body.role,
@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
             await newUser
               .save()
               .then(() => {
-                res.status(200).send(newUser);
+                res.status(200).json({ newUser });
               })
               .catch((err) => {
                 console.log("Error is ", err.message);
@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
           }
         });
       } else {
-        res.send("User already exists...");
+        res.status(200).json({ message: "User already exists..." });
       }
     })
     .catch((err) => {
