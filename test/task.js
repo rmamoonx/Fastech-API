@@ -121,60 +121,83 @@ describe("Tasks API", () => {
   /**
    * Test the PATCH route for Admin Login
    */
-
-  it("It should POST a request for Admin login", (done) => {
-    const task = {
-      email: "test12@test.com",
-      password: "test1012",
-    };
-    chai
-      .request(server)
-      .post("/admin/login")
-      .send(task)
-      .end((err, response) => {
-        response.should.have.status(200);
-        response.body.should.be.a("object");
-        token = response.body.token;
-        response.body.should.have.property("message").eq("User authenticated");
-        done();
-      });
-  });
-
-  it("It should not POST a request for Admin login", (done) => {
-    const task = {
-      email: "test2@test.com",
-      password: "test1012",
-    };
-    chai
-      .request(server)
-      .post("/admin/login")
-      .send(task)
-      .end((err, response) => {
-        response.should.have.status(401);
-        response.body.should.be.a("object");
-        token = response.body.token;
-        response.body.should.have
-          .property("message")
-          .eq("User Unauthorized Access");
-        done();
-      });
-  });
-
-  /**
-   * Test the GET (by id) route
-   */
-  describe("GET /admin/tickets", () => {
-    it("It should GET all the Tickets", (done) => {
+  describe("POST /admin/login", () => {
+    it("It should POST a request for Admin login", (done) => {
+      const task = {
+        email: "test12@test.com",
+        password: "test1012",
+      };
       chai
         .request(server)
-        .get("/admin/tickets")
-        .set({ Authorization: `Bearer ${token}` })
+        .post("/admin/login")
+        .send(task)
         .end((err, response) => {
           response.should.have.status(200);
           response.body.should.be.a("object");
-          response.body.should.have.property("result");
+          token = response.body.token;
+          response.body.should.have
+            .property("message")
+            .eq("User authenticated");
           done();
         });
+    });
+
+    it("It should not POST a request for Admin login", (done) => {
+      const task = {
+        email: "test2@test.com",
+        password: "test1012",
+      };
+      chai
+        .request(server)
+        .post("/admin/login")
+        .send(task)
+        .end((err, response) => {
+          response.should.have.status(401);
+          response.body.should.be.a("object");
+          token = response.body.token;
+          response.body.should.have
+            .property("message")
+            .eq("User Unauthorized Access");
+          done();
+        });
+    });
+
+    /**
+     * Test the GET route
+     */
+    describe("GET /admin/tickets", () => {
+      it("It should POST a request for Admin login", (done) => {
+        const task = {
+          email: "test12@test.com",
+          password: "test1012",
+        };
+        chai
+          .request(server)
+          .post("/admin/login")
+          .send(task)
+          .end((err, response) => {
+            response.should.have.status(200);
+            response.body.should.be.a("object");
+            token = response.body.token;
+            response.body.should.have
+              .property("message")
+              .eq("User authenticated");
+            done();
+          });
+      });
+
+      it("It should GET all the Tickets", (done) => {
+        chai
+          .request(server)
+          .get("/admin/tickets")
+          .set({ Authorization: `Bearer ${token}` })
+          .end((err, response) => {
+            response.should.have.status(200);
+            response.body.should.be.a("object");
+            response.body.should.have.property("result");
+            done();
+          });
+      });
     });
   });
 });
