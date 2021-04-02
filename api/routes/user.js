@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const Support = require("../models/Support");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const checkAuth = require("../Auth/checkAuth");
@@ -96,6 +97,23 @@ router.patch("/details", checkAuth, async (req, res) => {
     })
     .catch((err) => {
       console.log("Error is ", err.message);
+    });
+});
+
+router.post("/support", checkAuth, (req, res) => {
+  var ticket = new Support({
+    _id: req.userData.id,
+    message: req.body.message,
+  });
+  ticket
+    .save()
+    .then((item) => {
+      res.status(200).json({
+        message: "Ticket Submitted",
+      });
+    })
+    .catch((err) => {
+      res.status(400).send("Unable to save ticket");
     });
 });
 
