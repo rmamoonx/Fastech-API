@@ -19,7 +19,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.raw());
 
 const myurl = process.env.DB;
-const secret = "mysecretkey";
 
 const options = {
   useNewUrlParser: true,
