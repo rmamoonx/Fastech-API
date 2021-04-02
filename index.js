@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const signupRoutes = require("./api/routes/signup");
 const userRoutes = require("./api/routes/user");
+const adminRoutes = require("./api/routes/admin");
 
 const port = process.env.PORT || 3000;
 
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 
 app.use("/signup", signupRoutes);
 app.use("/user", userRoutes);
+app.use("/admin", adminRoutes);
 
 app.listen(port, () => {
   console.log(`app listening at http://localhost:${port}`);
