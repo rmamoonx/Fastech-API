@@ -11,6 +11,14 @@
 
 This project is simple Restful API that serves json replies.
 
+### API-Endpoints
+
+/user/login
+/user/support
+/user/details
+/admin/login
+/admin/tickets
+
 ## Technologies
 
 Project is created with:
@@ -23,10 +31,15 @@ Project is created with:
 
 ## Setup
 
-To run this project, install it locally using npm:
+To run this project, install it locally using npm: Please make sure to add environmental variables in .env file
+
+DB=DB URL
+PORT=3000
+SECRET=mysecretkey
 
 ```
 $ cd /Fastech-API
+$ touch or mkdir .env
 $ npm install
 $ npm start
 ```
