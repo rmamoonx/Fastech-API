@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const signupRoutes = require("./api/routes/signup");
 const loginRoutes = require("./api/routes/login");
+const userRoutes = require("./api/routes/userdetail");
 
 const port = process.env.PORT || 3000;
 
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 
 app.use("/signup", signupRoutes);
 app.use("/login", loginRoutes);
+app.use("/user", userRoutes);
 
 app.listen(port, () => {
   console.log(`app listening at http://localhost:${port}`);
