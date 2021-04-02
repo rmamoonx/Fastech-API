@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 const SupportSchema = mongoose.Schema({
-  _id: {
+  id: {
     type: Object,
     require: true,
   },

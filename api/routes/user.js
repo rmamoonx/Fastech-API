@@ -101,19 +101,19 @@ router.patch("/details", checkAuth, async (req, res) => {
 
 router.post("/support", checkAuth, (req, res) => {
   var ticket = new Support({
-    _id: req.userData.id,
+    id: req.userData.id,
     message: req.body.message,
   });
-  ticket
-    .save()
-    .then((item) => {
+  if (ticket.message) {
+    ticket.save().then((item) => {
       res.status(200).json({
         message: "Ticket Submitted",
       });
-    })
-    .catch((err) => {
-      res.status(400).send("Unable to save ticket");
     });
+  } else
+    (err) => {
+      res.status(400).json({ message: "Unable to save ticket" });
+    };
 });
 
 module.exports = router;
