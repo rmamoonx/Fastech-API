@@ -101,7 +101,7 @@ router.patch("/details", checkAuth, async (req, res) => {
 
 router.post("/support", checkAuth, (req, res) => {
   var ticket = new Support({
-    id: req.userData.id,
+    userid: req.userData.id,
     message: req.body.message,
   });
   if (ticket.message) {

@@ -51,4 +51,15 @@ router.post("/login", async (req, res) => {
       console.log("Error is ", err.message);
     });
 });
+
+router.get("/tickets", checkAuth, (req, res) => {
+  Support.find()
+    .exec()
+    .then((result) => {
+      res.status(200).json({
+        result,
+      });
+    });
+});
+
 module.exports = router;
