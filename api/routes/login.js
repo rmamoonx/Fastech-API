@@ -1,8 +1,8 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
-var bcrypt = require("bcrypt");
-var User = require("../models/User");
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const User = require("../models/User");
 const router = express.Router();
 var saltRounds = 10;
 
