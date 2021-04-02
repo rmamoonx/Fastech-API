@@ -33,7 +33,7 @@ Project is created with:
 
 To run this project, install it locally using npm: Please make sure to add environmental variables in .env file
 
-- DB=DB URL
+- DB= Your DB URL
 - PORT=3000
 - SECRET=mysecretkey
 
