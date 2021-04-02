@@ -18,7 +18,7 @@ router.post("/login", async (req, res) => {
   await User.findOne({ email: newUser.email })
     .then((profile) => {
       if (!profile) {
-        res.send("User not exist");
+        res.status(400).send("User not exist");
       } else {
         bcrypt.compare(
           newUser.password,
@@ -88,7 +88,7 @@ router.patch("/details", checkAuth, async (req, res) => {
                 }
               });
             } else {
-              res.send("User Unauthorized Access");
+              res.status(401).send("User Unauthorized Access");
             }
           }
         );

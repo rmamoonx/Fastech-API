@@ -46,3 +46,5 @@ app.use("/admin", adminRoutes);
 app.listen(port, () => {
   console.log(`app listening at http://localhost:${port}`);
 });
+
+module.exports = app;
